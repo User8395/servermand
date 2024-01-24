@@ -1,0 +1,2 @@
+# servermand
+The Serverman Daemon
