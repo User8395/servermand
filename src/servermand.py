@@ -1,11 +1,13 @@
 #!/usr/bin/env python
 
-from os import getcwd, popen
+from os import getcwd, popen, getpid, remove
 from sys import exit
 from json import load, dump
 
 mode = "normal"
 settings = load(open("settings.json", "r+"))
+with open("servermand.pid", "w") as f:
+    f.write(str(getpid()))
 
 open("servermand.log", "w").write("")
 
@@ -44,6 +46,7 @@ def stop():
     info("stopping")
     open("servermand.input", "w").close()
     open("servermand.output", "w").close()
+    remove("servermand.pid")
     exit(0)
 
 def read():
