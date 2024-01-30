@@ -9,6 +9,8 @@ mode = "normal"
 settings = load(open("settings.json", "r+"))
 with open("servermand.pid", "w") as f:
     f.write(str(getpid()))
+open("servermand.input", "w").close()
+open("servermand.output", "w").close()
 open("servermand.log", "w").close()
 
 def info(contents: str):
