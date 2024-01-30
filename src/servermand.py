@@ -3,13 +3,13 @@
 from os import getcwd, popen, getpid, remove
 from sys import exit
 from json import load, dump
+from time import sleep
 
 mode = "normal"
 settings = load(open("settings.json", "r+"))
 with open("servermand.pid", "w") as f:
     f.write(str(getpid()))
-
-open("servermand.log", "w").write("")
+open("servermand.log", "w").close()
 
 def info(contents: str):
     print(f"INFO: {contents}")
@@ -30,17 +30,38 @@ def run(command: str):
     print(f"RUN: {command}")
     with open("servermand.log", "a+") as f:
         f.write(f"RUN: {command}\n")
-    return popen(command).read().replace("\n", "<br>")
+    return popen(command).read()
 
 def internet(command):
     match command:
         case "status":
-            info("getting internet status")
-            with open("servermand.output", "r+") as f:
-                f.write(run("ip a"))
+            info("getting internet status...")
+            with open("servermand.output", "w") as f:
+                f.write(run("ip a").replace("\n", "<br>"))
+                pass
+            info("internet status written to output file")
+        case "interfaces":
+            info("getting internet interfaces...")
+            with open("servermand.output", "w") as f:
+                f.write(run("ls /sys/class/net/").split())
+            info("ip addresses written to output file")
+        case "addresses":
+            info("getting internet addresses...")
+            info("loading list of interfaces...")
+            ifs = run("ls /sys/class/net/").split()
+            info("getting each interface's ip address")
+            ips = ""
+            for i in ifs:
+                ip = run(f"ip -f inet addr show {i} | sed -En -e 's/.*inet ([0-9.]+).*/\\1/p'").replace("\n", " ")
+                if ip != "" and i != "lo":
+                    ips += ip
+            with open("servermand.output", "w") as f:
+                f.write(ips)
+            info("ip addresses written to output file")
         case "" | _:
             info("help for command internet")
-            info("status: write internet status to servermand.output, command used is ip a")
+            info("status: write internet status to output file")
+            info("addresses: write ip addresses to output file")
 
 def stop():
     info("stopping")

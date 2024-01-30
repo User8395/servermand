@@ -1,0 +1,184 @@
+INFO: starting servermand v0.0.0
+WARN: not started from /serverman, running in source mode
+WARN: input file is ./serverman.input
+INFO: started
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet addresses...
+INFO: loading list of interfaces...
+RUN: ls /sys/class/net/
+INFO: getting each interface's ip address
+RUN: ip -f inet addr show lo | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show virbr0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show vnet0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+RUN: ip -f inet addr show wlan0 | sed -En -e 's/.*inet ([0-9.]+).*/\1/p'
+INFO: ip addresses written to output file
+INFO: getting internet status...
+RUN: ip a
+INFO: internet status written to output file
