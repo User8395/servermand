@@ -38,7 +38,6 @@ def internet(command):
             info("getting internet status...")
             with open("servermand.output", "w") as f:
                 f.write(run("ip a").replace("\n", "<br>"))
-                pass
             info("internet status written to output file")
         case "interfaces":
             info("getting internet interfaces...")
