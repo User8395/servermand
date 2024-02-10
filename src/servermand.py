@@ -5,13 +5,6 @@ from sys import exit
 from json import load, dump
 from time import sleep
 
-mode = "normal"
-settings = load(open("settings.json", "r+"))
-with open("servermand.pid", "w") as f:
-    f.write(str(getpid()))
-open("servermand.input", "w").close()
-open("servermand.output", "w").close()
-open("servermand.log", "w").close()
 
 def info(contents: str):
     print(f"INFO: {contents}")
@@ -34,40 +27,41 @@ def run(command: str):
         f.write(f"RUN: {command}\n")
     return popen(command).read()
 
+def help(command):
+    match command:
+        case "internet":
+            internet(help)
+        case "" | _:
+            info("servermand commands")
+            info("help: show this message")
+            info("stop: stop servermand")
+            info("internet: modify settings related to internet connection")
 def internet(command):
     match command:
-        case "status":
-            info("getting internet status...")
-            with open("servermand.output", "w") as f:
-                f.write(run("ip a").replace("\n", "<br>"))
-            info("internet status written to output file")
-        case "interfaces":
-            info("getting internet interfaces...")
-            with open("servermand.output", "w") as f:
-                f.write(run("ls /sys/class/net/").split())
-            info("ip addresses written to output file")
         case "addresses":
             info("getting internet addresses...")
             info("loading list of interfaces...")
             ifs = run("ls /sys/class/net/").split()
             info("getting each interface's ip address")
-            ips = ""
-            for i in ifs:
-                ip = run(f"ip -f inet addr show {i} | sed -En -e 's/.*inet ([0-9.]+).*/\\1/p'").replace("\n", " ")
-                if ip != "" and i != "lo":
-                    ips += ip
+            ips = {}
+            for i, iff in enumerate(ifs):
+                print(ips)
+                ipp = run(f"ip -f inet addr show {iff} | sed -En -e 's/.*inet ([0-9.]+).*/\\1/p'").replace("\n", "")
+                gatewayy = run(f"ip route show 0.0.0.0/0 dev {iff} | cut -d\  -f3").replace("\n", "")
+                if ipp != "" and iff != "lo":
+                    ips[f"{iff}"] = {"ip": ipp, "gateway": gatewayy}
+        
             with open("servermand.output", "w") as f:
-                f.write(ips)
+                f.write(str(ips))
             info("ip addresses written to output file")
         case "" | _:
             info("help for command internet")
             info("status: write internet status to output file")
-            info("addresses: write ip addresses to output file")
 
 def stop():
     info("stopping")
-    open("servermand.input", "w").close()
-    open("servermand.output", "w").close()
+    remove("servermand.input", "w")
+    remove("servermand.output", "w")
     remove("servermand.pid")
     exit(0)
 
@@ -78,8 +72,8 @@ def read():
             try:
                 match command[0]:
                     case "internet":
-                        internet(command[1])
                         inp.truncate(0)
+                        internet(command[1])
                         continue
                     case "stop":
                         stop()
@@ -94,11 +88,24 @@ def read():
                     
 
 def main():
-    info("starting servermand v0.0.0")
+    with open("servermand.pid", "w") as f:
+        f.write(str(getpid()))
+    info("starting servermand v0.0.0...")
+    mode = "normal"
+    info("loading settings...")
+    settings = load(open("settings.json", "r+"))
+    info("creating temp files...")
     if getcwd() != "/serverman":
         warn("not started from /serverman, running in source mode")
-        warn("input file is ./serverman.input")
+        warn("temp files are in this directory")
+        open("servermand.input", "w").close()
+        open("servermand.output", "w").close()
+        open("servermand.log", "w").close()
         mode = "source"
+    else:
+        error("running servermand in normal mode is not currently supported.")
+        error("please run servermand from the source folder.    ")
+        exit(1)
     info("started")
     read()
     
