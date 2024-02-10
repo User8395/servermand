@@ -45,7 +45,6 @@ def internet(command):
             info("getting each interface's ip address")
             ips = {}
             for i, iff in enumerate(ifs):
-                print(ips)
                 ipp = run(f"ip -f inet addr show {iff} | sed -En -e 's/.*inet ([0-9.]+).*/\\1/p'").replace("\n", "")
                 gatewayy = run(f"ip route show 0.0.0.0/0 dev {iff} | cut -d\  -f3").replace("\n", "")
                 if ipp != "" and iff != "lo":
