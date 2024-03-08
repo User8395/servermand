@@ -1,9 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
-from os import getcwd, popen, getpid, remove
+import stat
+from os import getcwd, popen, getpid, remove, getuid, chmod
 from sys import exit
 from json import load, dump
 from time import sleep
+from ast import literal_eval
 
 
 def info(contents: str):
@@ -28,16 +30,17 @@ def run(command: str):
     return popen(command).read()
 
 def help(command):
-    match command:
+    match command[0]:
         case "internet":
-            internet(help)
+            internet("")
         case "" | _:
             info("servermand commands")
             info("help: show this message")
             info("stop: stop servermand")
             info("internet: modify settings related to internet connection")
+
 def internet(command):
-    match command:
+    match command[0]:
         case "addresses":
             info("getting internet addresses...")
             info("loading list of interfaces...")
@@ -46,41 +49,74 @@ def internet(command):
             ips = {}
             for i, iff in enumerate(ifs):
                 ipp = run(f"ip -f inet addr show {iff} | sed -En -e 's/.*inet ([0-9.]+).*/\\1/p'").replace("\n", "")
-                gatewayy = run(f"ip route show 0.0.0.0/0 dev {iff} | cut -d\  -f3").replace("\n", "")
+                gateway = run(f"ip route show 0.0.0.0/0 dev {iff} | cut -d\  -f3").replace("\n", "")
                 if ipp != "" and iff != "lo":
-                    ips[f"{iff}"] = {"ip": ipp, "gateway": gatewayy}
+                    ips[f"{iff}"] = {"ip": ipp, "gateway": gateway}
         
             with open("servermand.output", "w") as f:
                 f.write(str(ips))
             info("ip addresses written to output file")
+        case "set":
+            info("setting ip addresses")
+            newips = literal_eval(command[1])
+            with open("servermand.output", "w") as f:
+                f.write("loading")
+            info("reading data")
+            for ip in newips:
+                info(f"{ip.replace('.', ' ')}: {newips[ip]}")
+            for ip in newips:
+                ip = ip.replace(".", " ").split()
+                thingtoset = ip[1]
+                interface = ip[0]
+                ip = newips[".".join(ip)]
+                info(f"setting {thingtoset} of {interface} to {ip}")
+                if thingtoset == "ip":
+                    run(f"ip addr replace {ip}/24 dev {interface}")
+                elif thingtoset == "gateway":
+                    oldgateway = run(f'ip route show 0.0.0.0/0 dev {interface} | cut -d\  -f3').replace('\n', '')
+                    run(f"ip route delete default via {oldgateway}")
+                    run(f"ip route add default via {ip} dev {interface}")
+            info("complete")
+            info("reboot required to apply changes")
+            with open("servermand.output", "w") as f:
+                f.write("ok")
         case "" | _:
             info("help for command internet")
-            info("status: write internet status to output file")
+            info("addresses, noargs: write ip addresses to output file in the form of a dict/object")
+            info("set, newips: change the IP address/gateway, newips: the new ip addresses to set in dict form")
 
 def stop():
     info("stopping")
-    remove("servermand.input", "w")
-    remove("servermand.output", "w")
+    remove("servermand.input")
+    remove("servermand.output")
     remove("servermand.pid")
     exit(0)
 
 def read():
     while True:
-        with open("servermand.input", "r+") as inp:
-            command = inp.read().split()
+        with open("servermand.input", "r+") as f:
+            command = f.read().split()
             try:
                 match command[0]:
                     case "internet":
-                        inp.truncate(0)
-                        internet(command[1])
+                        command.pop(0)
+                        f.truncate(0)
+                        internet(command)
+                        continue
+                    case "help":
+                        command.pop(0)
+                        f.truncate(0)
+                        help(command)
                         continue
                     case "stop":
+                        f.truncate(0)
                         stop()
+                        continue
                     case "":
                         continue
                     case _:
+                        f.truncate(0)
                         error(f"command not found: {command[0]}")
-                        inp.truncate(0)
                         continue
             except IndexError:
                 pass
@@ -90,21 +126,30 @@ def main():
     with open("servermand.pid", "w") as f:
         f.write(str(getpid()))
     info("starting servermand v0.0.0...")
+    if getuid() != 0:
+        error("not running as root")
+        info("stopping")
+        exit(1)
     mode = "normal"
     info("loading settings...")
     settings = load(open("settings.json", "r+"))
     info("creating temp files...")
     if getcwd() != "/serverman":
         warn("not started from /serverman, running in source mode")
-        warn("temp files are in this directory")
-        open("servermand.input", "w").close()
-        open("servermand.output", "w").close()
-        open("servermand.log", "w").close()
         mode = "source"
     else:
         error("running servermand in normal mode is not currently supported.")
-        error("please run servermand from the source folder.    ")
+        error("please run servermand from the source folder.")
         exit(1)
+    warn("temp files are in this directory")
+    open("servermand.input", "w").close()
+    open("servermand.output", "w").close()
+    open("servermand.log", "w").close()
+    
+    chmod("servermand.input", stat.S_IRWXO)
+    chmod("servermand.output", stat.S_IRWXO)
+    chmod("servermand.log", stat.S_IRWXO)
+    chmod("servermand.pid", stat.S_IRWXO)
     info("started")
     read()
     
