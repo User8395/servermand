@@ -7,6 +7,7 @@ from json import load, dump
 from time import sleep
 from ast import literal_eval
 
+version = "0.0-prealpha.0"
 
 def info(contents: str):
     print(f"INFO: {contents}")
@@ -27,7 +28,7 @@ def run(command: str):
     print(f"RUN: {command}")
     with open("servermand.log", "a+") as f:
         f.write(f"RUN: {command}\n")
-    return popen(command).read()
+    return str(popen(command).read())
 
 def help(command):
     match command[0]:
@@ -38,6 +39,7 @@ def help(command):
             info("help: show this message")
             info("stop: stop servermand")
             info("internet: modify settings related to internet connection")
+            info("about: show servermand and hostname info")
 
 def internet(command):
     match command[0]:
@@ -92,6 +94,26 @@ def stop():
     remove("servermand.pid")
     exit(0)
 
+def about():
+    hostinfo = literal_eval(run("hostnamectl --json=short").replace('null', "None"))
+    info(f"servermand version {version}")
+    info(f"operating system: {hostinfo['OperatingSystemPrettyName']}")
+    info(f"kernel version: {hostinfo['KernelName']} {hostinfo['KernelRelease']} {hostinfo['KernelVersion']}")
+    info(f"hardware vendor: {hostinfo['HardwareVendor']}")
+    info(f"hardware model: {hostinfo['HardwareModel']}")
+    info(f"firmware vendor: {hostinfo['FirmwareVendor']}")
+    info(f"firmware version: {hostinfo['FirmwareVersion']}")
+    info("writing to output file")
+    with open("servermand.output", "w") as f:
+        infotowrite = dict()
+        infotowrite["servermand"] = version
+        infotowrite["os"] = hostinfo["OperatingSystemPrettyName"]
+        infotowrite["kernel"] = hostinfo['KernelName'] + " " + hostinfo['KernelRelease'] + " " + hostinfo['KernelVersion']
+        infotowrite["hardware"] = hostinfo["HardwareVendor"] + " " + hostinfo["HardwareModel"]
+        infotowrite["firmware"] = hostinfo["FirmwareVendor"] + " " + hostinfo["FirmwareVersion"]
+        f.write(str(infotowrite))
+    info("system info written to output file")
+
 def read():
     while True:
         with open("servermand.input", "r+") as f:
@@ -107,6 +129,10 @@ def read():
                         command.pop(0)
                         f.truncate(0)
                         help(command)
+                        continue
+                    case "about":
+                        f.truncate(0)
+                        about()
                         continue
                     case "stop":
                         f.truncate(0)
@@ -125,7 +151,7 @@ def read():
 def main():
     with open("servermand.pid", "w") as f:
         f.write(str(getpid()))
-    info("starting servermand v0.0.0...")
+    info(f"starting servermand {version}...")
     if getuid() != 0:
         error("not running as root")
         info("stopping")
@@ -156,3 +182,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+else:
+    error("not running directly, exiting")
