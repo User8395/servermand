@@ -137,6 +137,12 @@ def read():
                     case "stop":
                         f.truncate(0)
                         stop()
+                        continue    
+                    case "run":
+                        command.pop(0)
+                        f.truncate(0)
+                        with open("servermand.output", "w") as f:
+                            f.write(run(" ".join(command)))
                         continue
                     case "":
                         continue
@@ -149,38 +155,48 @@ def read():
                     
 
 def main():
-    with open("servermand.pid", "w") as f:
-        f.write(str(getpid()))
-    info(f"starting servermand {version}...")
-    if getuid() != 0:
-        error("not running as root")
-        info("stopping")
-        exit(1)
-    mode = "normal"
-    info("loading settings...")
-    settings = load(open("settings.json", "r+"))
-    info("creating temp files...")
-    if getcwd() != "/serverman":
-        warn("not started from /serverman, running in source mode")
-        mode = "source"
-    else:
-        error("running servermand in normal mode is not currently supported.")
-        error("please run servermand from the source folder.")
-        exit(1)
-    warn("temp files are in this directory")
-    open("servermand.input", "w").close()
-    open("servermand.output", "w").close()
-    open("servermand.log", "w").close()
+    # with open("servermand.pid", "w") as f:
+    #     f.write(str(getpid()))
+    # info(f"starting servermand {version}...")
+    # if getuid() != 0:
+    #     error("not running as root")
+    #     info("stopping")
+    #     exit(1)
+    # mode = "normal"
+    # info("loading settings...")
+    # settings = load(open("settings.json", "r+"))
+    # info("creating temp files...")
+    # if getcwd() != "/serverman":
+    #     warn("not started from /serverman, running in source mode")
+    #     mode = "source"
+    # else:
+    #     error("running servermand in normal mode is not currently supported.")
+    #     error("please run servermand from the source folder.")
+    #     exit(1)
+    # warn("temp files are in this directory")
+    # open("servermand.input", "w").close()
+    # open("servermand.output", "w").close()
+    # open("servermand.log", "w").close()
     
-    chmod("servermand.input", stat.S_IRWXO)
-    chmod("servermand.output", stat.S_IRWXO)
-    chmod("servermand.log", stat.S_IRWXO)
-    chmod("servermand.pid", stat.S_IRWXO)
-    info("started")
-    read()
-    
+    # chmod("servermand.input", stat.S_IRWXO)
+    # chmod("servermand.output", stat.S_IRWXO)
+    # chmod("servermand.log", stat.S_IRWXO)
+    # chmod("servermand.pid", stat.S_IRWXO)
+    # info("started")
+    # read()
+    print("IMPORTANT INFO")
+    print("A seperate program to manage the system's dirty work is no longer needed. Thus, servermand is now useless.")
+    print("The original code will be kept just in case it is needed again.")
+    print("servermand will exit in 3...", end='', flush=True)
+    sleep(1)
+    print("2...", end='', flush=True)
+    sleep(1)
+    print("1...", end='', flush=True)
+    sleep(1)
+    print("0")
 
 if __name__ == "__main__":
     main()
 else:
-    error("not running directly, exiting")
+    main()
+    # error("not running directly, exiting")
