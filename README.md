@@ -1,14 +1,11 @@
 # servermand
 The Serverman Daemon
 
-## Daemon?
-A daemon (pronounced demon) is a background process that handles all the system's dirty work.
-
-## Setup
-Make sure Python 3 or newer is installed
+## IMPORTANT INFO
+servermand is now obsolete. Any attempts to run the code will by met with by the following message:
 ```
-git clone https://github.com/User8395/servermand # Clone
-cd servermand/src # cd into source folder
-./servermand.py # Run
+IMPORTANT INFO
+A seperate program to manage the system's dirty work is no longer needed. Thus, servermand is now useless.
+The original code will be kept just in case it is needed again.
+servermand will exit in 3...2...1...0
 ```
-Input and output files are `servermand.input` and `servermand.output`, respectively.
